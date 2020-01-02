@@ -37,3 +37,8 @@ The game have a graphic interface and a terminal one, both can be play with diff
   ```
 ## Implemented IAs
   -MCTS: Monte Carlo Tree Search
+  
+## External code
+  The code use from other users of GiHub with some modifications.
+  * [Monte Carlo Tree Search](https://github.com/int8/monte-carlo-tree-search/blob/master/mctspy/games/examples/tictactoe.py) from int8.
+  * [Graphic interface](https://github.com/nyergler/teaching-python-with-pygame/blob/master/ttt-tutorial/tictactoe.py) from nyergler.
