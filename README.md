@@ -25,6 +25,10 @@ The game have a graphic interface and a terminal one, both can be play with diff
   2. Player vs IA
   3. IA vs Player
 
+## Code structure
+
+![Graph](https://github.com/ipmach/TicTacToe_IA/blob/master/Documentation/graph.png)
+
 ## Dependecies
   Dependecies need it to run the code.
   * [Numpy](https://numpy.org/)
