@@ -4,6 +4,11 @@ Game of the tic tac toe with an IA to play with. This code was made just for fun
 
 The code is done in Python 3.7 and the actual IA implemented is Monte Carlo Tree Search a heuristic algorithm use in Alpha go.
 
+[![video](https://img.youtube.com/vi/ngVd-QV7YvY/0.jpg)](https://www.youtube.com/watch?v=ngVd-QV7YvY)
+### (Click in the image to watch the video)
+
+
+
 ## Play game
   -Terminal interface:
   * size: board size.
