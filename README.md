@@ -1,7 +1,13 @@
 # Tic Tac Toe IA game
 
-Game of the tic tac toe with an IA to play with.  This code was made just for fun an to give a start point for future implementations of search trees algorithms.
-The game have a graphic interface and a terminal one, both can be play with different boards sizes (3x3,4x4..). 
+Game of the tic tac toe with an IA to play with. This code was made just for fun and to give a start point for future implementations of search tree algorithms. The game has a graphic interface and a terminal one, both can be played with different board sizes (3x3,4x4..).
+
+The code is done in Python 3.7 and the actual IA implemented is Monte Carlo Tree Search a heuristic algorithm use in Alpha go.
+
+[![video](https://img.youtube.com/vi/ngVd-QV7YvY/0.jpg)](https://www.youtube.com/watch?v=ngVd-QV7YvY)
+### (Click in the image to watch the video)
+
+
 
 ## Play game
   -Terminal interface:
