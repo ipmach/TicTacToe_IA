@@ -2,7 +2,7 @@
 
 Game of the tic tac toe with an IA to play with. This code was made just for fun and to give a start point for future implementations of search tree algorithms. The game has a graphic interface and a terminal one, both can be played with different board sizes (3x3,4x4..).
 
-The code is done in Python 3.7 and the actual IA implemented is Monte Carlo Tree Search a heuristic algorithm use in Alpha go.
+The code is done in Python 3.7 and the actual IAs implemented are Monte Carlo Tree Search a heuristic algorithm use in Alpha go and a simple version of Hidden Markov Model.
 
 [![video](https://img.youtube.com/vi/ngVd-QV7YvY/0.jpg)](https://www.youtube.com/watch?v=ngVd-QV7YvY)
 ### (Click in the image to watch the video)
@@ -46,7 +46,8 @@ The code is done in Python 3.7 and the actual IA implemented is Monte Carlo Tree
   pip install pygame
   ```
 ## Implemented IAs
-  -MCTS: Monte Carlo Tree Search
+  -[MCTS](https://en.wikipedia.org/wiki/Monte_Carlo_tree_search): Monte Carlo Tree Search. <br />
+  -[HMM](https://en.wikipedia.org/wiki/Hidden_Markov_model): Hidden Markov Model
   
 ## External code
   The code use from other users of GiHub with some modifications.
