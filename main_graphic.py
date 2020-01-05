@@ -20,7 +20,18 @@ def main():
             break
         except:
             print("You must choose one of the options")
-    gameInterface(height,width,size,train_steps,int(choose)-1)
+    if int(choose) > 1:
+        print("Choose IA to fight against:")
+        print("1) MCTS (Monte Carlo Tree Search)")
+        print("2) HMM (Hidden Markov Model)")
+        while(True): #Initial menu
+            try:
+                agent_choose = input("Select number: ")
+                assert agent_choose in ["1","2"], "Must be one of the options"
+                break
+            except:
+                print("You must choose one of the options")
+    gameInterface(height,width,size,train_steps,int(choose)-1,int(agent_choose))
 
 if __name__ == "__main__":
     main()

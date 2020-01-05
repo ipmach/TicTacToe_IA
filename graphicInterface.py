@@ -6,7 +6,8 @@ import pygame
 import numpy as np
 from pygame.locals import *
 from game_nodes import Model
-from agent import MCTS
+from agent_MCTS import MCTS
+from agent_HMM import HMM
 from mvc import _find_winner_UI,_find_new,view, _find_winner,correctNumber
 import time
 
@@ -205,7 +206,7 @@ def playIA(board, XO):
 # --------------------------------------------------------------------
 # initialize pygame and our window
 
-def gameInterface(heightP,widthP,sizeP,train_stepsP,game_typeP):
+def gameInterface(heightP,widthP,sizeP,train_stepsP,game_typeP,agent_choose):
     global height,width,size,train_steps,game_type,board,model,agent
     pygame.init()
     height = heightP
@@ -217,7 +218,12 @@ def gameInterface(heightP,widthP,sizeP,train_stepsP,game_typeP):
     ttt = pygame.display.set_mode ((height, width+25))
     pygame.display.set_caption ('Tic-Tac-Toe')
 
-    agent = MCTS(exploration_weight = 150)
+    if agent_choose ==1:
+        agent = MCTS(exploration_weight = 150)
+        print("MCTS loaded")
+    else:
+        agent = HMM(exploration_weight = 10, size = size)
+        print("HMM loaded")
     # create the game board
     board = initBoard (ttt)
 

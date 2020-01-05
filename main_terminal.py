@@ -1,6 +1,7 @@
 from game_nodes import  Model
 import mvc
-from agent import MCTS
+from agent_MCTS import MCTS
+from agent_HMM import HMM
 import sys
 import numpy as np
 
@@ -15,7 +16,6 @@ def main():
     print("2) Player vs IA")
     print("3) IA vs Player")
     round = 0
-    agent = MCTS(exploration_weight = 50)
     board = Model(tup=(None,) * size**2, turn=True, winner=None,size = size ,terminal=False)
     while(True): #Initial menu
         try:
@@ -25,6 +25,24 @@ def main():
         except:
             print("You must choose one of the options")
     choose = int(choose)
+    if int(choose) > 1:
+        print("Choose IA to fight against:")
+        print("1) MCTS (Monte Carlo Tree Search)")
+        print("2) HMM (Hidden Markov Model)")
+        while(True): #Initial menu
+            try:
+                agent_choose = input("Select number: ")
+                assert agent_choose in ["1","2"], "Must be one of the options"
+                break
+            except:
+                print("You must choose one of the options")
+    agent_choose = int(agent_choose)
+    if agent_choose ==1:
+        agent = MCTS(exploration_weight = 150)
+        print("MCTS loaded")
+    else:
+        agent = HMM(exploration_weight = 10, size = size)
+        print("HMM loaded")
     player = 1
     if choose ==3:
         choose = 2

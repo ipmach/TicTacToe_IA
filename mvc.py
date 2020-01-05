@@ -95,16 +95,19 @@ def convert(x):
 
 converv = np.vectorize(convert)
 
-def _find_new(old_tup,new_tup,size):
+def _find_new(old_tup,new_tup,size, inIndex = False):
     """
     Find the new element on the board updated.
     """
     a = converv(np.array(old_tup))
     b = converv(np.array(new_tup))
     index = np.nonzero(a - b)[0][0]
+    if inIndex:
+        return index
     row = int(index/size)
     col = index - size*row
     return col,row
+
 
 def correctNumber(size,aux):
     """
