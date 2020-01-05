@@ -8,10 +8,6 @@ class HMM(agent):
 
     def __init__(self, exploration_weight=1,size = 3):
         self.size =size
-        ##Not quite implement it yet
-        self.pix = np.ones(self.size**2) /self.size**2 #Initial probability of Q
-        self.A = np.ones((self.size,self.size)) / (self.size**2) #Transition probablilities
-        ####
         self.w =exploration_weight #size of the exploration for the winning probability
 
     def b(self,tup):
@@ -30,7 +26,7 @@ class HMM(agent):
         Calculate the probability p(On = win,On-1 = None, ..., O0 = None, Qn = ...)
         """
         if n == 0: #first move
-            return self.pix[i] *self._simulate(n+1,N,board,i, IAturn)
+            return self.b(board.tup) *self._simulate(n+1,N,board,i, IAturn)
         elif n==N: #Final move
             return 0.1
         else: #Rest of moves
@@ -39,10 +35,8 @@ class HMM(agent):
                 p = self.b(j.tup)
                 if j.winner == IAturn:
                     aux +=1
-                elif j.winner ==  (not IAturn):
-                    aux += 0
                 else:
-                    aux += p*self._simulate(n+1,N,j,i, IAturn)
+                    aux += p*board.reward()*self._simulate(n+1,N,j,i, IAturn)
             return aux
 
     def do_rollout(self,board):

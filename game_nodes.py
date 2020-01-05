@@ -33,11 +33,13 @@ class Model(_TTTB,Node):
         """
         Give the reward of the actual board.
         """
+        """
         if not board.terminal:
             raise RuntimeError(f"reward called on nonterminal board {board}")
         if board.winner is board.turn:
             # It's your turn and you've already won. Should be impossible.
             raise RuntimeError(f"reward called on unreachable board {board}")
+        """
         if board.turn is (not board.winner):
             return 0  # Your opponent has just won. Bad.
         if board.winner is None:
