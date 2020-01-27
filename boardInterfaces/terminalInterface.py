@@ -1,57 +1,17 @@
 from game_nodes import  Model
 import mvc
-from agent_MCTS import MCTS
-from agent_HMM import HMM
 import sys
 import numpy as np
+import player
 
-def main():
-    try:
-        size = int(sys.argv[1])
-        train_steps = int(sys.argv[2])
-    except:
-        raise RuntimeError("Error: must be 'python main size train_steps' with ints ")
-    print("Welcome, choose game type:")
-    print("1) Player vs Player")
-    print("2) Player vs IA")
-    print("3) IA vs Player")
+
+def gameTerminal(size,train_steps,turnPlayer,agent):
     round = 0
     board = Model(tup=(None,) * size**2, turn=True, winner=None,size = size ,terminal=False)
-    while(True): #Initial menu
-        try:
-            choose = input("Select number: ")
-            assert choose in ["1","2","3"], "Must be one of the options"
-            break
-        except:
-            print("You must choose one of the options")
-    choose = int(choose)
-    if int(choose) > 1:
-        print("Choose IA to fight against:")
-        print("1) MCTS (Monte Carlo Tree Search)")
-        print("2) HMM (Hidden Markov Model)")
-        while(True): #Initial menu
-            try:
-                agent_choose = input("Select number: ")
-                assert agent_choose in ["1","2"], "Must be one of the options"
-                break
-            except:
-                print("You must choose one of the options")
-    agent_choose = int(agent_choose)
-    if agent_choose ==1:
-        agent = MCTS(exploration_weight = 150)
-        print("MCTS loaded")
-    else:
-        agent = HMM(exploration_weight = 10, size = size)
-        print("HMM loaded")
-    player = 1
-    if choose ==3:
-        choose = 2
-        player = 0
     mvc.view(board.tup,size,round)
     while(True): #Loop of the total game
-        player = int(not player) #Change player
         while(True): #Loop of a turn of a player
-            if choose == 2 and player ==1:#Agent turn
+            if turnPlayer.playerTurn() == player.typePlayer.IA_PLAYER:#Agent turn
                 for _ in range(train_steps):
                     agent.do_rollout(board)
                 board = agent.choose(board)
@@ -61,7 +21,6 @@ def main():
             else: #Player turn
                 while(True): #Player choose play
                     try:
-                        print("Player:", player)
                         row_col = input("enter row,col: ")
                         row, col = map(int, row_col.split(","))
                         index = size * (row - 1) + (col - 1)
@@ -80,6 +39,7 @@ def main():
                 except Exception as e:
                     print(e)
         round +=1
+        turnPlayer.newTurn()
         player_won = mvc._find_winner(board.tup,size)
         if player_won != None: #Game check if the player won
             print("Congratulations, player",player_won,"won")
@@ -87,6 +47,3 @@ def main():
         if mvc._isTie(size,round): #Game check if there is tie
             print("Game finish in a tie")
             break
-
-if __name__ == "__main__":
-    main()

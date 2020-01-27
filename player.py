@@ -1,0 +1,31 @@
+class typePlayer:
+    IA_PLAYER = 1
+    GRAPHIC_PLAYER = 2
+    TERMINAL_PLAYER = 3
+    NUMER_PLAYERS = 3
+
+typePlayer.IA_PLAYER
+
+class players:
+
+    type_player = {}
+
+    def insertPlayer_1(self,type_player):
+        self.type_player[True] = type_player
+        assert 0 < type_player < typePlayer.NUMER_PLAYERS, "Error, player unknow."
+
+    def insertPlayer_2(self,type_player):
+        self.type_player[False] = type_player
+        assert 0 < type_player < typePlayer.NUMER_PLAYERS, "Error, player unknow."
+
+    def reset(self):
+        self.turn = True
+
+    def playerTurn(self):
+        return self.type_player[self.turn]
+
+    def newTurn(self):
+        self.turn = not self.turn
+
+    def __init__(self):
+        self.reset()

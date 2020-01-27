@@ -6,10 +6,10 @@ import pygame
 import numpy as np
 from pygame.locals import *
 from game_nodes import Model
-from agent_MCTS import MCTS
-from agent_HMM import HMM
-from mvc import _find_winner_UI,_find_new,view, _find_winner,correctNumber
+from mvc import _find_winner_UI,_find_new,view, _find_winner,correctNumber,_isTie
 import time
+import player
+
 
 #Initial parameters
 XO   = "X" #First character
@@ -121,9 +121,6 @@ def drawMove (board, boardRow, boardCol, Piece):
         pygame.draw.line (board, (0,0,0), (centerX + int(large/4), centerY - int(high/4)), \
                          (centerX - int(large/4), centerY + int(high/4)), 2)
 
-    # mark the space as used
-    index = size * (boardRow ) + (boardCol )
-    model = model.make_move(index)
 
 def clickBoard(board):
     """
@@ -142,17 +139,16 @@ def clickBoard(board):
         # this space is in use
         return
 
+    model = model.make_move(index)
+
     # draw an X or O
-    if game_type > 0 :
-        XO = 'X'
     drawMove (board, row, col, XO)
 
     # toggle XO to the other player's move
-    if game_type == 0:
-        if (XO == "X"):
-            XO = "O"
-        else:
-            XO = "X"
+    if (XO == "X"):
+        XO = "O"
+    else:
+        XO = "X"
 
 def gameWon(board):
     """
@@ -191,66 +187,59 @@ def gameWon(board):
             winner = _find_winner(model.tup,size)
             pygame.draw.line (board, (250,0,0), (height - high, high), (large, width - large), 2)
 
-def playIA(board, XO):
+def playIA(board):
     """
     Make the play from the IA
     """
-    global model,size,train_steps
+    global model,size,train_steps,XO
     for _ in range(train_steps):
         agent.do_rollout(model)
     model_new = agent.choose(model)
     col,row= _find_new(model.tup,model_new.tup,size)
     model = model_new
     drawMove (board, row, col, XO)
+    if (XO == "X"):
+        XO = "O"
+    else:
+        XO = "X"
 
 # --------------------------------------------------------------------
 # initialize pygame and our window
 
-def gameInterface(heightP,widthP,sizeP,train_stepsP,game_typeP,agent_choose):
-    global height,width,size,train_steps,game_type,board,model,agent
+def gameInterface(heightP,widthP,sizeP,train_stepsP,turnPlayer,agent_choose):
+    global height,width,size,train_steps,game_type,board,model,agent, winner
     pygame.init()
+    agent = agent_choose
     height = heightP
     width =widthP
     size = sizeP
     train_steps = train_stepsP
-    game_type= game_typeP
     round = 0
     ttt = pygame.display.set_mode ((height, width+25))
     pygame.display.set_caption ('Tic-Tac-Toe')
 
-    if agent_choose ==1:
-        agent = MCTS(exploration_weight = 150)
-        print("MCTS loaded")
-    else:
-        agent = HMM(exploration_weight = 10, size = size)
-        print("HMM loaded")
     # create the game board
     board = initBoard (ttt)
-
     model = Model(tup=(None,) * size**2, turn=True, winner=None,size = size ,terminal=False)
     # main event loop
     running = 1
-    if game_type == 2 and not model.is_terminal():
-        model = Model(tup=model.tup, turn=True, winner=None,size = size ,terminal=False)
-        playIA(board,'O')
-        view(model.tup,size,0)
+
     while (running == 1):
         for event in pygame.event.get():
             if event.type is QUIT:
                 running = 0
-            elif event.type is MOUSEBUTTONDOWN:
-                # the user clicked; place an X or O
-                if game_type > 0:
-                    model = Model(tup=model.tup, turn=True, winner=None,size = size ,terminal=False)
-                clickBoard(board)
-                view(model.tup,size,round)
-                round +=1
-                if game_type > 0 and not model.is_terminal():
-                    model = Model(tup=model.tup, turn=True, winner=None,size = size ,terminal=False)
-                    playIA(board,'O')
+            elif winner == None and not _isTie(size,round):
+                if event.type is MOUSEBUTTONDOWN and turnPlayer.playerTurn() == player.typePlayer.GRAPHIC_PLAYER:
+                    # the user clicked; place an X or O
+                    clickBoard(board)
                     view(model.tup,size,round)
                     round +=1
-
+                    turnPlayer.newTurn()
+                elif turnPlayer.playerTurn() == player.typePlayer.IA_PLAYER:
+                    playIA(board)
+                    view(model.tup,size,round)
+                    round +=1
+                    turnPlayer.newTurn()
             # check for a winner
             gameWon(board)
             # update the display
