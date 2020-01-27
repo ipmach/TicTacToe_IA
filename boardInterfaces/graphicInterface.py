@@ -22,6 +22,7 @@ game_type= 0 #Game type 0: Player vs Player, 1: Player vs IA, 2: IA vs Player
 board = None #Board interface
 model = None #Model of the game
 agent = None #IA who plays
+round = 0 #Round game
 
 def initBoard(ttt):
     """
@@ -31,7 +32,7 @@ def initBoard(ttt):
     # set up the background surface
     background = pygame.Surface (ttt.get_size())
     background = background.convert()
-    background.fill ((250, 250, 250))
+    background.fill ((220, 220, 220))
     # draw the grid lines
     # vertical lines...
     high = height/size
@@ -49,23 +50,26 @@ def drawStatus (board):
     """
     Write the message of the actual status of the game
     """
-    global XO, winner,size, height,width
+    global XO, winner,size, height,width,round
 
     # determine the status message
-    if (winner is None):
-        message = XO + "'s turn"
+    # determine the status message
+    if _isTie(size,round):
+        message = "Tie"
+    elif (winner is None):
+        message = "Round: " + str(round) + "     " + XO + "'s turn"
     else:
         if winner == True:
-            message = "X" + " won!"
+            message = "Round: " + str(round) + "     " + "X" + " won!"
         else:
-            message = "O" + " won!"
+            message =  "Round: " + str(round) + "     " +"O" + " won!"
 
     # render the status message
-    font = pygame.font.Font(None, 24)
-    text = font.render(message, 1, (10, 10, 10))
+    font = pygame.font.Font(None, 30)
+    text = font.render(message, 5, (240, 240, 240))
 
     # copy the rendered message onto the board
-    board.fill ((250, 250, 250), (0, height, width, 25))
+    board.fill ((105, 105, 105), (0, height, width, 25))
     board.blit(text, (10, width))
 
 def showBoard (ttt, board):
@@ -114,12 +118,12 @@ def drawMove (board, boardRow, boardCol, Piece):
     centerY = int(((boardRow) * large) + large/2)
     # draw the appropriate piece
     if (Piece == 'O'):
-        pygame.draw.circle (board, (0,0,0), (centerX, centerY), int(high/2)- 6, 2)
+        pygame.draw.circle (board, (0,0,250), (centerX, centerY), int(high/2)- 6, 5)
     else:
-        pygame.draw.line (board, (0,0,0), (centerX - int(large/4), centerY - int(high/4)), \
-                         (centerX + int(large/4), centerY + int(high/4)), 2)
-        pygame.draw.line (board, (0,0,0), (centerX + int(large/4), centerY - int(high/4)), \
-                         (centerX - int(large/4), centerY + int(high/4)), 2)
+        pygame.draw.line (board, (128,0,128), (centerX - int(large/4), centerY - int(high/4)), \
+                         (centerX + int(large/4), centerY + int(high/4)), 5)
+        pygame.draw.line (board, (128,0,128), (centerX + int(large/4), centerY - int(high/4)), \
+                         (centerX - int(large/4), centerY + int(high/4)), 5)
 
 
 def clickBoard(board):
@@ -163,7 +167,7 @@ def gameWon(board):
                 if data[0][row]:
                     winner = _find_winner(model.tup,size)
                     pygame.draw.line (board, (250,0,0), (0, (row + 1)*high - high/2), \
-                                      (height, (row + 1)*high - high/2), 2)
+                                      (height, (row + 1)*high - high/2), 5)
                     break
 
         elif any(data[1]): #Draw winning column
@@ -172,20 +176,20 @@ def gameWon(board):
                 if data[1][col]:
                     winner = _find_winner(model.tup,size)
                     pygame.draw.line (board, (250,0,0), ((col + 1)* large - large/2, 0), \
-                                      ((col + 1)* large - large/2, width), 2)
+                                      ((col + 1)* large - large/2, width), 5)
                     break
 
         elif data[2]: #Draw winning diagonal
             high = height/(2*size)
             large = width/(2*size)
             winner = _find_winner(model.tup,size)
-            pygame.draw.line (board, (250,0,0), (high, large), (height - high, width - large), 2)
+            pygame.draw.line (board, (250,0,0), (high, large), (height - high, width - large), 5)
 
         elif data[3]:#Draw winning diagonal
             high = height/(2*size)
             large = width/(2*size)
             winner = _find_winner(model.tup,size)
-            pygame.draw.line (board, (250,0,0), (height - high, high), (large, width - large), 2)
+            pygame.draw.line (board, (250,0,0), (height - high, high), (large, width - large), 5)
 
 def playIA(board):
     """
@@ -207,7 +211,7 @@ def playIA(board):
 # initialize pygame and our window
 
 def gameInterface(heightP,widthP,sizeP,train_stepsP,turnPlayer,agent_choose):
-    global height,width,size,train_steps,game_type,board,model,agent, winner
+    global height,width,size,train_steps,game_type,board,model,agent, winner,round
     pygame.init()
     agent = agent_choose
     height = heightP
@@ -216,14 +220,13 @@ def gameInterface(heightP,widthP,sizeP,train_stepsP,turnPlayer,agent_choose):
     train_steps = train_stepsP
     round = 0
     ttt = pygame.display.set_mode ((height, width+25))
-    pygame.display.set_caption ('Tic-Tac-Toe')
 
+    pygame.display.set_caption ('Tic-Tac-Toe')
     # create the game board
     board = initBoard (ttt)
     model = Model(tup=(None,) * size**2, turn=True, winner=None,size = size ,terminal=False)
     # main event loop
     running = 1
-
     while (running == 1):
         for event in pygame.event.get():
             if event.type is QUIT:
