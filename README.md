@@ -13,16 +13,14 @@ The code is done in Python 3.7 and the actual IAs implemented are Monte Carlo Tr
   -Terminal interface:
   * size: board size.
   * trains_steps: train steps in each iteration (MCTS).
-  ```python
-  python main_terminal.py size trains_steps
-  ```
+
   -Graphic interface:
   * size: board size.
   * trains_steps: train steps in each iteration (MCTS).
   * height: height of the interface.
-  * width: witdth of the interface.
+  * width: width of the interface.
   ```python
-  python main size train_steps height width
+  python main.py size train_steps height width
 ```
 
 ## Game types
@@ -30,6 +28,12 @@ The code is done in Python 3.7 and the actual IAs implemented are Monte Carlo Tr
   1. Player vs Player
   2. Player vs IA
   3. IA vs Player
+  4. IA vs IA
+
+## Interface
+
+![Interface](https://github.com/ipmach/TicTacToe_IA/blob/master/Documentation/interface.png)
+
 
 ## Code structure
 
@@ -47,8 +51,9 @@ The code is done in Python 3.7 and the actual IAs implemented are Monte Carlo Tr
   ```
 ## Implemented IAs
   -[MCTS](https://en.wikipedia.org/wiki/Monte_Carlo_tree_search): Monte Carlo Tree Search. <br />
-  -[HMM](https://en.wikipedia.org/wiki/Hidden_Markov_model): Hidden Markov Model
-  
+  -[HMM](https://en.wikipedia.org/wiki/Hidden_Markov_model): Hidden Markov Model (Disable) <br />
+  -[MM](https://en.wikipedia.org/wiki/Minimax): MiniMax (Beta)
+
 ## External code
   The code use from other users of GiHub with some modifications.
   * [Monte Carlo Tree Search](https://github.com/int8/monte-carlo-tree-search/blob/master/mctspy/games/examples/tictactoe.py) from int8.

@@ -1,8 +1,21 @@
 import sys
 from boardInterfaces import graphicInterface, terminalInterface
-from agents import agent_MCTS,agent_HMM
+from agents import agent_MCTS,agent_HMM, agent_MiniMax
 import player
 
+def agents_choose(agent_choose,size):
+    agent_choose = int(agent_choose)
+    if agent_choose ==1:
+        agent = agent_MCTS.MCTS(exploration_weight = 150)
+        print("MCTS loaded")
+    elif agent_choose ==2:
+        agent = agent_HMM.HMM(exploration_weight = 10, size = size)
+        print("HMM loaded")
+    elif agent_choose ==3:
+        agent = agent_MiniMax.MiniMax(2)
+    else:
+        agent = None
+    return agent
 
 def main():
     try:
@@ -38,28 +51,34 @@ def main():
 
     agent_choose = 0
     if int(game_mode) > 1:
-        print("Choose IA to fight against:")
+        print("Choose IA:")
         print("1) MCTS (Monte Carlo Tree Search)")
         print("2) HMM (Hidden Markov Model)")
+        print("3) MiniMax")
         while(True): #Initial menu
             try:
                 agent_choose = input("Select number: ")
-                assert agent_choose in ["1","2"], "Must be one of the options"
+                assert agent_choose in ["1","2","3"], "Must be one of the options"
+                break
+            except:
+                print("You must choose one of the options")
+
+    if int(game_mode) == 4:
+        print("Choose second IA:")
+        print("1) MCTS (Monte Carlo Tree Search)")
+        print("2) HMM (Hidden Markov Model)")
+        print("3) MiniMax")
+        while(True): #Initial menu
+            try:
+                agent_choose2 = input("Select number: ")
+                assert agent_choose2 in ["1","2","3"], "Must be one of the options"
                 break
             except:
                 print("You must choose one of the options")
 
     ##LOAD AGENT
-    agent_choose = int(agent_choose)
-    if agent_choose ==1:
-        agent = agent_MCTS.MCTS(exploration_weight = 150)
-        print("MCTS loaded")
-    elif agent_choose ==2:
-        agent = agent_HMM.HMM(exploration_weight = 10, size = size)
-        print("HMM loaded")
-    else:
-        agent = None
-
+    agent = agents_choose(agent_choose,size)
+    agent2 = agents_choose(agent_choose2,size) if int(game_mode) == 4 else None
     #CHOOSE GAME MODE
     game_mode = int(game_mode)
     turnPlayer = player.players()
@@ -74,13 +93,13 @@ def main():
         turnPlayer.insertPlayer_2(player.typePlayer.GRAPHIC_PLAYER)
     elif game_mode == 4:
         turnPlayer.insertPlayer_1(player.typePlayer.IA_PLAYER)
-        turnPlayer.insertPlayer_2(player.typePlayer.IA_PLAYER)
+        turnPlayer.insertPlayer_2(player.typePlayer.IA_PLAYER_2)
 
     boardType = int(boardType)
     if boardType == 1:
-        graphicInterface.gameInterface(height,width,size,train_steps,turnPlayer,agent)
+        graphicInterface.gameInterface(height,width,size,train_steps,turnPlayer,agent,agent2)
     else:
-        terminalInterface.gameTerminal(size,train_steps,turnPlayer,agent)
+        terminalInterface.gameTerminal(size,train_steps,turnPlayer,agent,agent2)
 
 if __name__ == "__main__":
     main()

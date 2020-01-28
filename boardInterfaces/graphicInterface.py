@@ -22,6 +22,7 @@ game_type= 0 #Game type 0: Player vs Player, 1: Player vs IA, 2: IA vs Player
 board = None #Board interface
 model = None #Model of the game
 agent = None #IA who plays
+agent2 = None #second IA (optional)
 round = 0 #Round game
 
 def initBoard(ttt):
@@ -191,7 +192,7 @@ def gameWon(board):
             winner = _find_winner(model.tup,size)
             pygame.draw.line (board, (250,0,0), (height - high, high), (large, width - large), 5)
 
-def playIA(board):
+def playIA(board,agent):
     """
     Make the play from the IA
     """
@@ -210,10 +211,11 @@ def playIA(board):
 # --------------------------------------------------------------------
 # initialize pygame and our window
 
-def gameInterface(heightP,widthP,sizeP,train_stepsP,turnPlayer,agent_choose):
-    global height,width,size,train_steps,game_type,board,model,agent, winner,round
+def gameInterface(heightP,widthP,sizeP,train_stepsP,turnPlayer,agent_choose,agent_choose2):
+    global height,width,size,train_steps,game_type,board,model,agent, agent2,winner,round
     pygame.init()
     agent = agent_choose
+    agent2 = agent_choose2
     height = heightP
     width =widthP
     size = sizeP
@@ -228,6 +230,7 @@ def gameInterface(heightP,widthP,sizeP,train_stepsP,turnPlayer,agent_choose):
     # main event loop
     running = 1
     while (running == 1):
+        #Events created by the player
         for event in pygame.event.get():
             if event.type is QUIT:
                 running = 0
@@ -238,14 +241,23 @@ def gameInterface(heightP,widthP,sizeP,train_stepsP,turnPlayer,agent_choose):
                     view(model.tup,size,round)
                     round +=1
                     turnPlayer.newTurn()
-                elif turnPlayer.playerTurn() == player.typePlayer.IA_PLAYER:
-                    playIA(board)
-                    view(model.tup,size,round)
-                    round +=1
-                    turnPlayer.newTurn()
-            # check for a winner
-            gameWon(board)
-            # update the display
-            showBoard (ttt, board)
+                    gameWon(board)
+                    showBoard (ttt, board)
+        #Plays by the IA
+        if winner == None and not _isTie(size,round):
+            if turnPlayer.playerTurn() == player.typePlayer.IA_PLAYER:
+                playIA(board,agent)
+                view(model.tup,size,round)
+                round +=1
+                turnPlayer.newTurn()
+            elif turnPlayer.playerTurn() == player.typePlayer.IA_PLAYER_2:
+                playIA(board,agent2)
+                view(model.tup,size,round)
+                round +=1
+                turnPlayer.newTurn()
+        # check for a winner
+        gameWon(board)
+        # update the display
+        showBoard (ttt, board)
 
 #gameInterface(600,600,3,100,1)
