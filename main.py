@@ -12,7 +12,8 @@ def agents_choose(agent_choose,size):
         agent = agent_HMM.HMM(exploration_weight = 10, size = size)
         print("HMM loaded")
     elif agent_choose ==3:
-        agent = agent_MiniMax.MiniMax(2)
+        agent = agent_MiniMax.MiniMax(4)
+        print("MiniMax loaded")
     else:
         agent = None
     return agent
