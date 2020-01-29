@@ -1,6 +1,6 @@
 import sys
 from boardInterfaces import graphicInterface, terminalInterface
-from agents import agent_MCTS,agent_HMM, agent_MiniMax
+from agents import agent_MCTS,agent_Heuristic, agent_MiniMax
 import player
 
 def agents_choose(agent_choose,size):
@@ -9,11 +9,11 @@ def agents_choose(agent_choose,size):
         agent = agent_MCTS.MCTS(exploration_weight = 150)
         print("MCTS loaded")
     elif agent_choose ==2:
-        agent = agent_HMM.HMM(exploration_weight = 10, size = size)
-        print("HMM loaded")
-    elif agent_choose ==3:
         agent = agent_MiniMax.MiniMax(4)
         print("MiniMax loaded")
+    elif agent_choose == 3:
+        agent = agent_Heuristic.Heuristic()
+        print("Heuristic loaded")
     else:
         agent = None
     return agent
@@ -54,8 +54,8 @@ def main():
     if int(game_mode) > 1:
         print("Choose IA:")
         print("1) MCTS (Monte Carlo Tree Search)")
-        print("2) HMM (Hidden Markov Model)")
-        print("3) MiniMax")
+        print("2) MiniMax")
+        print("3) Heuristic")
         while(True): #Initial menu
             try:
                 agent_choose = input("Select number: ")
@@ -67,8 +67,8 @@ def main():
     if int(game_mode) == 4:
         print("Choose second IA:")
         print("1) MCTS (Monte Carlo Tree Search)")
-        print("2) HMM (Hidden Markov Model)")
-        print("3) MiniMax")
+        print("2) MiniMax")
+        print("3) Heuristic")
         while(True): #Initial menu
             try:
                 agent_choose2 = input("Select number: ")

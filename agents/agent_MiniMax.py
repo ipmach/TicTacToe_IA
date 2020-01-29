@@ -25,14 +25,13 @@ class MiniMax(agent):
             Depth tree search of the minimax algorithm
             """
             a=  mvc.converv(board.tup)
-            if n == self.depth:
+            if n == self.depth: #End of the exploration
                 return 0
-            if np.where(a==2)[0].shape[0] == 0:
+            if np.where(a==2)[0].shape[0] == 0: #Tie
                 return 0
-            if mvc._find_winner(board.tup,board.size) == player:
+            if mvc._find_winner(board.tup,board.size) == player: #Win
                 return 1
-            if mvc._find_winner(board.tup,board.size) == (not player):
-                #print("Enter with :", board.tup, turn)
+            if mvc._find_winner(board.tup,board.size) == (not player): #Loss
                 return -1
             list_children =board.find_children()
             value = 0
@@ -49,7 +48,7 @@ class MiniMax(agent):
 
         def choose(self,board):
             """
-            choose the model to use
+            Choose the board to play
             """
             children_value = []
             children_board = []
@@ -58,15 +57,5 @@ class MiniMax(agent):
             for i in list_children:
                 children_value.append(self._search(i,player,0,True))
                 children_board.append(i)
-                #print(self._search(i,player,0,True),i)
             aux = np.argmax(children_value)
             return children_board[aux]
-
-"""
-agent = MiniMax(10)
-model = Model(tup=(False,False,None,None,None,None,True,True,None), turn=True, winner=None,size = 3 ,terminal=False)
-
-model2 = agent.choose(model)
-
-print(model2)
-"""

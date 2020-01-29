@@ -30,11 +30,6 @@ The code is done in Python 3.7 and the actual IAs implemented are Monte Carlo Tr
   3. IA vs Player
   4. IA vs IA
 
-## Interface
-
-![Interface](https://github.com/ipmach/TicTacToe_IA/blob/master/Documentation/interface.png)
-
-
 ## Code structure
 
 ![Graph](https://github.com/ipmach/TicTacToe_IA/blob/master/Documentation/graph.png)
@@ -51,8 +46,8 @@ The code is done in Python 3.7 and the actual IAs implemented are Monte Carlo Tr
   ```
 ## Implemented IAs
   -[MCTS](https://en.wikipedia.org/wiki/Monte_Carlo_tree_search): Monte Carlo Tree Search. <br />
-  -[HMM](https://en.wikipedia.org/wiki/Hidden_Markov_model): Hidden Markov Model (Disable) <br />
-  -[MM](https://en.wikipedia.org/wiki/Minimax): MiniMax (Beta)
+  -[MM](https://en.wikipedia.org/wiki/Minimax): MiniMax <br />
+  -Heuristic
 
 ## External code
   The code use from other users of GiHub with some modifications.
