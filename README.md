@@ -14,6 +14,9 @@ The code is done in Python 3.7 and the actual IAs implemented are Monte Carlo Tr
   * size: board size.
   * trains_steps: train steps in each iteration (MCTS).
 
+  -Stadistic interace:
+  * Plot the score after x games between two agents.
+
   -Graphic interface:
   * size: board size.
   * trains_steps: train steps in each iteration (MCTS).
@@ -29,6 +32,7 @@ The code is done in Python 3.7 and the actual IAs implemented are Monte Carlo Tr
   2. Player vs IA
   3. IA vs Player
   4. IA vs IA
+  5. IA vs IA stadistics
 
 ## Code structure
 
@@ -44,6 +48,12 @@ The code is done in Python 3.7 and the actual IAs implemented are Monte Carlo Tr
   ```python
   pip install pygame
   ```
+
+  * [Matplotlib](https://matplotlib.org/)
+  ```python
+  pip install matplotlib
+  ```
+
 ## Implemented IAs
   -[MCTS](https://en.wikipedia.org/wiki/Monte_Carlo_tree_search): Monte Carlo Tree Search. <br />
   -[MM](https://en.wikipedia.org/wiki/Minimax): MiniMax, with "alpha beta optimization" <br />

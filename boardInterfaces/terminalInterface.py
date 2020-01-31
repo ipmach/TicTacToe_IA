@@ -5,7 +5,7 @@ import numpy as np
 import player
 
 
-def gameTerminal(size,train_steps,turnPlayer,agent):
+def gameTerminal(size,train_steps,turnPlayer,agent,agent2):
     round = 0
     board = Model(tup=(None,) * size**2, turn=True, winner=None,size = size ,terminal=False)
     mvc.view(board.tup,size,round)
@@ -15,6 +15,13 @@ def gameTerminal(size,train_steps,turnPlayer,agent):
                 for _ in range(train_steps):
                     agent.do_rollout(board)
                 board = agent.choose(board)
+                print("IA choose")
+                mvc.view(board.tup,size,round)
+                break
+            if turnPlayer.playerTurn() == player.typePlayer.IA_PLAYER_2:#Agent turn
+                for _ in range(train_steps):
+                    agent2.do_rollout(board)
+                board = agent2.choose(board)
                 print("IA choose")
                 mvc.view(board.tup,size,round)
                 break

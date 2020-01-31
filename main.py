@@ -1,5 +1,5 @@
 import sys
-from boardInterfaces import graphicInterface, terminalInterface
+from boardInterfaces import graphicInterface, terminalInterface, stadisticInterface
 from agents import agent_MCTS,agent_Heuristic, agent_MiniMax
 import player
 
@@ -9,7 +9,7 @@ def agents_choose(agent_choose,size):
         agent = agent_MCTS.MCTS(exploration_weight = 150)
         print("MCTS loaded")
     elif agent_choose ==2:
-        agent = agent_MiniMax.MiniMax(4)
+        agent = agent_MiniMax.MiniMax(6)
         print("MiniMax loaded")
     elif agent_choose == 3:
         agent = agent_Heuristic.Heuristic()
@@ -31,24 +31,27 @@ def main():
     print("2) Player vs IA")
     print("3) IA vs Player")
     print("4) IA vs IA")
+    print("5) IA vs IA stadistics")
     while(True): #Initial menu
         try:
             game_mode = input("Select number: ")
-            assert game_mode in ["1","2","3","4"], "Must be one of the options"
+            assert game_mode in ["1","2","3","4","5"], "Must be one of the options"
             break
         except:
             print("You must choose one of the options")
 
-    print("Choose board:")
-    print("1) Graphic board")
-    print("2) Terminal board")
-    while(True): #Initial menu
-        try:
-            boardType = input("Select number: ")
-            assert boardType in ["1","2"], "Must be one of the options"
-            break
-        except:
-            print("You must choose one of the options")
+    boardType = "0"
+    if int(game_mode) < 5:
+        print("Choose board:")
+        print("1) Graphic board")
+        print("2) Terminal board")
+        while(True): #Initial menu
+            try:
+                boardType = input("Select number: ")
+                assert boardType in ["1","2"], "Must be one of the options"
+                break
+            except:
+                print("You must choose one of the options")
 
     agent_choose = 0
     if int(game_mode) > 1:
@@ -64,7 +67,7 @@ def main():
             except:
                 print("You must choose one of the options")
 
-    if int(game_mode) == 4:
+    if int(game_mode) >= 4:
         print("Choose second IA:")
         print("1) MCTS (Monte Carlo Tree Search)")
         print("2) MiniMax (with Alpha Beta pruning)")
@@ -79,7 +82,7 @@ def main():
 
     ##LOAD AGENT
     agent = agents_choose(agent_choose,size)
-    agent2 = agents_choose(agent_choose2,size) if int(game_mode) == 4 else None
+    agent2 = agents_choose(agent_choose2,size) if int(game_mode) >= 4 else None
     #CHOOSE GAME MODE
     game_mode = int(game_mode)
     turnPlayer = player.players()
@@ -92,12 +95,14 @@ def main():
     elif game_mode == 3:
         turnPlayer.insertPlayer_1(player.typePlayer.IA_PLAYER)
         turnPlayer.insertPlayer_2(player.typePlayer.GRAPHIC_PLAYER)
-    elif game_mode == 4:
+    elif game_mode >= 4:
         turnPlayer.insertPlayer_1(player.typePlayer.IA_PLAYER)
         turnPlayer.insertPlayer_2(player.typePlayer.IA_PLAYER_2)
 
     boardType = int(boardType)
-    if boardType == 1:
+    if game_mode == 5:
+        stadisticInterface.gameStadistic(size,train_steps,turnPlayer,agent,agent2)
+    elif boardType == 1:
         graphicInterface.gameInterface(height,width,size,train_steps,turnPlayer,agent,agent2)
     else:
         terminalInterface.gameTerminal(size,train_steps,turnPlayer,agent,agent2)
