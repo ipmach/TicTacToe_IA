@@ -67,7 +67,7 @@ def main():
     if int(game_mode) == 4:
         print("Choose second IA:")
         print("1) MCTS (Monte Carlo Tree Search)")
-        print("2) MiniMax")
+        print("2) MiniMax (with Alpha Beta pruning)")
         print("3) Heuristic")
         while(True): #Initial menu
             try:

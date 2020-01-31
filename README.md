@@ -46,7 +46,7 @@ The code is done in Python 3.7 and the actual IAs implemented are Monte Carlo Tr
   ```
 ## Implemented IAs
   -[MCTS](https://en.wikipedia.org/wiki/Monte_Carlo_tree_search): Monte Carlo Tree Search. <br />
-  -[MM](https://en.wikipedia.org/wiki/Minimax): MiniMax <br />
+  -[MM](https://en.wikipedia.org/wiki/Minimax): MiniMax, with "alpha beta optimization" <br />
   -Heuristic
 
 ## External code
