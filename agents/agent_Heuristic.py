@@ -8,6 +8,8 @@ import numpy as np
 class Heuristic(agent):
     "Heuristic agent, doesn't look the long game he just care about the next two moves"
 
+    agent_name = "Heuristic"
+
     def do_rollout(self,board):
         """
         Don't need to train in each iteration

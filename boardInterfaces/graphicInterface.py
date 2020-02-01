@@ -24,6 +24,7 @@ model = None #Model of the game
 agent = None #IA who plays
 agent2 = None #second IA (optional)
 round = 0 #Round game
+turnPlayer = None #object players
 
 def initBoard(ttt):
     """
@@ -51,7 +52,7 @@ def drawStatus (board):
     """
     Write the message of the actual status of the game
     """
-    global XO, winner,size, height,width,round
+    global XO, winner,size, height,width,round, turnPlayer
 
     # determine the status message
     # determine the status message
@@ -61,9 +62,9 @@ def drawStatus (board):
         message = "Round: " + str(round) + "     " + XO + "'s turn"
     else:
         if winner == True:
-            message = "Round: " + str(round) + "     " + "X" + " won!"
+            message = "Round: " + str(round) + "     " + "X" + " won!" + " Congratulations: " + turnPlayer.PLAYER1
         else:
-            message =  "Round: " + str(round) + "     " +"O" + " won!"
+            message =  "Round: " + str(round) + "     " +"O" + " won!" + " Congratulations: " + turnPlayer.PLAYER2
 
     # render the status message
     font = pygame.font.Font(None, 30)
@@ -211,8 +212,8 @@ def playIA(board,agent):
 # --------------------------------------------------------------------
 # initialize pygame and our window
 
-def gameInterface(heightP,widthP,sizeP,train_stepsP,turnPlayer,agent_choose,agent_choose2):
-    global height,width,size,train_steps,game_type,board,model,agent, agent2,winner,round
+def gameInterface(heightP,widthP,sizeP,train_stepsP,turnPlayers,agent_choose,agent_choose2):
+    global height,width,size,train_steps,game_type,board,model,agent, agent2,winner,round, turnPlayer
     pygame.init()
     agent = agent_choose
     agent2 = agent_choose2
@@ -222,6 +223,7 @@ def gameInterface(heightP,widthP,sizeP,train_stepsP,turnPlayer,agent_choose,agen
     train_steps = train_stepsP
     round = 0
     ttt = pygame.display.set_mode ((height, width+25))
+    turnPlayer = turnPlayers
 
     pygame.display.set_caption ('Tic-Tac-Toe')
     # create the game board

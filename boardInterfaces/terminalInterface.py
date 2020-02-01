@@ -49,7 +49,11 @@ def gameTerminal(size,train_steps,turnPlayer,agent,agent2):
         turnPlayer.newTurn()
         player_won = mvc._find_winner(board.tup,size)
         if player_won != None: #Game check if the player won
-            print("Congratulations, player",player_won,"won")
+            if player_won:
+                aux = turnPlayer.PLAYER1
+            else:
+                aux = turnPlayer.PLAYER2
+            print("Congratulations, player",aux,"won")
             break
         if mvc._isTie(size,round): #Game check if there is tie
             print("Game finish in a tie")

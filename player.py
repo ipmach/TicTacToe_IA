@@ -10,12 +10,14 @@ class players:
 
     type_player = {}
 
-    def insertPlayer_1(self,type_player):
+    def insertPlayer_1(self,type_player,name):
         self.type_player[True] = type_player
+        self.PLAYER1 = name
         assert 0 < type_player <= typePlayer.NUMER_PLAYERS, "Error, player unknow."
 
-    def insertPlayer_2(self,type_player):
+    def insertPlayer_2(self,type_player,name):
         self.type_player[False] = type_player
+        self.PLAYER2 = name
         assert 0 < type_player <= typePlayer.NUMER_PLAYERS, "Error, player unknow."
 
     def reset(self):

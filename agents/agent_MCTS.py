@@ -13,6 +13,8 @@ from abc import ABC, abstractmethod
 class MCTS(agent):
     "Monte Carlo tree searcher. First rollout the tree then choose a move."
 
+    agent_name = "MCTS"
+
     def __init__(self, exploration_weight=1):
         self.Q = defaultdict(int)  # total reward of each node
         self.N = defaultdict(int)  # total visit count for each node

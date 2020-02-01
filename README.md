@@ -23,7 +23,7 @@ The code is done in Python 3.7 and the actual IAs implemented are Monte Carlo Tr
   * height: height of the interface.
   * width: width of the interface.
   ```python
-  python main.py size train_steps height width
+  python main.py size 
 ```
 
 ## Game types
@@ -52,6 +52,11 @@ The code is done in Python 3.7 and the actual IAs implemented are Monte Carlo Tr
   * [Matplotlib](https://matplotlib.org/)
   ```python
   pip install matplotlib
+  ```
+
+  * [Pandas](https://pandas.pydata.org/)
+  ```python
+  pip install pandas
   ```
 
 ## Implemented IAs

@@ -2,14 +2,16 @@ import sys
 from boardInterfaces import graphicInterface, terminalInterface, stadisticInterface
 from agents import agent_MCTS,agent_Heuristic, agent_MiniMax
 import player
+import json
 
 def agents_choose(agent_choose,size):
     agent_choose = int(agent_choose)
+    data = config()
     if agent_choose ==1:
-        agent = agent_MCTS.MCTS(exploration_weight = 150)
+        agent = agent_MCTS.MCTS(exploration_weight = data["agents"]["MCST"]["exploration_weight"])
         print("MCTS loaded")
     elif agent_choose ==2:
-        agent = agent_MiniMax.MiniMax(6)
+        agent = agent_MiniMax.MiniMax(data["agents"]["MiniMax"]["depth"])
         print("MiniMax loaded")
     elif agent_choose == 3:
         agent = agent_Heuristic.Heuristic()
@@ -18,12 +20,21 @@ def agents_choose(agent_choose,size):
         agent = None
     return agent
 
+def config():
+    try:
+        with open('config.json') as f:
+            data = json.load(f)
+    except:
+        assert False, "Error reading config.json."
+    return data
+
 def main():
     try:
         size = int(sys.argv[1])
-        train_steps = int(sys.argv[2])
-        height = int(sys.argv[3])
-        width = int(sys.argv[4])
+        data = config()
+        width = data["Graphic interace screen"]["witdh"]
+        height = data["Graphic interace screen"]["height"]
+        train_steps = data["agents"]["train_steps"]
     except:
         raise RuntimeError("Error: must be 'python main size train_steps height width' with ints ")
     print("Welcome, choose game type:")
@@ -87,21 +98,23 @@ def main():
     game_mode = int(game_mode)
     turnPlayer = player.players()
     if game_mode == 1:
-        turnPlayer.insertPlayer_1(player.typePlayer.GRAPHIC_PLAYER)
-        turnPlayer.insertPlayer_2(player.typePlayer.GRAPHIC_PLAYER)
+        turnPlayer.insertPlayer_1(player.typePlayer.GRAPHIC_PLAYER, "Player 1")
+        turnPlayer.insertPlayer_2(player.typePlayer.GRAPHIC_PLAYER, "Player 2")
     elif game_mode == 2:
-        turnPlayer.insertPlayer_1(player.typePlayer.GRAPHIC_PLAYER)
-        turnPlayer.insertPlayer_2(player.typePlayer.IA_PLAYER)
+        turnPlayer.insertPlayer_1(player.typePlayer.GRAPHIC_PLAYER, "Player 1")
+        turnPlayer.insertPlayer_2(player.typePlayer.IA_PLAYER, agent.agent_name)
     elif game_mode == 3:
-        turnPlayer.insertPlayer_1(player.typePlayer.IA_PLAYER)
-        turnPlayer.insertPlayer_2(player.typePlayer.GRAPHIC_PLAYER)
+        turnPlayer.insertPlayer_1(player.typePlayer.IA_PLAYER, agent.agent_name)
+        turnPlayer.insertPlayer_2(player.typePlayer.GRAPHIC_PLAYER, "Player 2")
     elif game_mode >= 4:
-        turnPlayer.insertPlayer_1(player.typePlayer.IA_PLAYER)
-        turnPlayer.insertPlayer_2(player.typePlayer.IA_PLAYER_2)
+        turnPlayer.insertPlayer_1(player.typePlayer.IA_PLAYER, agent.agent_name)
+        turnPlayer.insertPlayer_2(player.typePlayer.IA_PLAYER_2, agent2.agent_name)
 
     boardType = int(boardType)
     if game_mode == 5:
-        stadisticInterface.gameStadistic(size,train_steps,turnPlayer,agent,agent2)
+        visualize = data["Stadistics interface"]["visualize"]
+        save_games = data["Stadistics interface"]["save_games"]
+        stadisticInterface.gameStadistic(size,train_steps,turnPlayer,agent,agent2,save_games = save_games,visualize =visualize)
     elif boardType == 1:
         graphicInterface.gameInterface(height,width,size,train_steps,turnPlayer,agent,agent2)
     else:

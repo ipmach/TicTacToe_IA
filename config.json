@@ -1,0 +1,24 @@
+{
+    "Graphic interace screen":
+    {
+      "witdh": 600,
+      "height": 600
+    },
+    "Stadistics interface":
+    {
+      "visualize": true,
+      "save_games": true
+    },
+    "agents":
+    {
+      "MCST":
+      {
+        "exploration_weight":150
+      },
+      "MiniMax":
+      {
+        "depth": 4
+      },
+      "train_steps":500
+    }
+}

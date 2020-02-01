@@ -8,6 +8,8 @@ import numpy as np
 class MiniMax(agent):
         "MiniMax tree searcher, with alpha beta pruning optimization."
 
+        agent_name = "MiniMax"
+
         def __init__(self,depth):
             self.depth = depth
 

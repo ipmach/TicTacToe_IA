@@ -4,6 +4,7 @@ class agent(ABC):
     """
     A representation of the agent.
     """
+    agent_name = "agent"
 
     @abstractmethod
     def choose(board):
