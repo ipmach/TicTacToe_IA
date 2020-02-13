@@ -23,7 +23,12 @@ The code is done in Python 3.7 and the actual IAs implemented are Monte Carlo Tr
   * height: height of the interface.
   * width: width of the interface.
   ```python
-  python main.py size 
+  python main.py size
+```
+
+  To get a report of a qtable already train.
+  ```python
+  python check_qtable.py size
 ```
 
 ## Game types
@@ -57,6 +62,11 @@ The code is done in Python 3.7 and the actual IAs implemented are Monte Carlo Tr
   * [Pandas](https://pandas.pydata.org/)
   ```python
   pip install pandas
+  ```
+
+  * [tqdm](https://github.com/tqdm/tqdm)
+  ```python
+  pip install tqdm
   ```
 
 ## Implemented IAs

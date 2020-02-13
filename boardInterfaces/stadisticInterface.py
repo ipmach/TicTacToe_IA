@@ -9,23 +9,26 @@ from matplotlib import pyplot as plt
 import pandas as pd
 import copy
 
-def gameStadistic(size,train_steps, turnPlayer,agent, agent2, save_games = False,visualize = True):
-    print("How many games:")
-    while(True):
-        try:
-            total_games = input("Select number: ")
-            total_games = int(total_games)
-            assert total_games > 0, "Number must be positive."
-            break
-        except:
-            print("You must choose a number")
+def gameStadistic(size,train_steps, turnPlayer,agent, agent2,train = 0 ,save_games = False,visualize = True):
+    total_games = 1
+    if train == 0:
+        print("How many games:")
+        while(True):
+            try:
+                total_games = input("Select number: ")
+                total_games = int(total_games)
+                assert total_games > 0, "Number must be positive."
+                break
+            except:
+                print("You must choose a number")
     player1 = [0]
     player2 = [0]
     replay = []
     for j in range(total_games):
         round = 0
         model = Model(tup=(None,) * size**2, turn=True, winner=None,size = size ,terminal=False)
-        print("Playing",j,"of",total_games)
+        if train == 0:
+            print("Playing",j,"of",total_games)
         game = []
         while(True):
             #Check if a player won or tie

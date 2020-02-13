@@ -40,10 +40,10 @@ class Model(_TTTB,Node):
             # It's your turn and you've already won. Should be impossible.
             raise RuntimeError(f"reward called on unreachable board {board}")
         """
-        if board.turn is (not board.winner):
-            return 0  # Your opponent has just won. Bad.
         if board.winner is None:
             return 0.5  # Board is a tie
+        if board.turn is (not board.winner):
+            return 0  # Your opponent has just won. Bad.
         # The winner is neither True, False, nor None
         raise RuntimeError(f"board has unknown winner type {board.winner}")
 

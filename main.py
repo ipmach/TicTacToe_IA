@@ -1,10 +1,13 @@
 import sys
 from boardInterfaces import graphicInterface, terminalInterface, stadisticInterface
-from agents import agent_MCTS,agent_Heuristic, agent_MiniMax
+from agents import agent_MCTS,agent_Heuristic, agent_MiniMax,agent_QLearning
 import player
 import json
 
 def agents_choose(agent_choose,size):
+    """
+    Load the agent
+    """
     agent_choose = int(agent_choose)
     data = config()
     if agent_choose ==1:
@@ -16,17 +19,34 @@ def agents_choose(agent_choose,size):
     elif agent_choose == 3:
         agent = agent_Heuristic.Heuristic()
         print("Heuristic loaded")
+    elif agent_choose == 4:
+        agent = agent_QLearning.QLearning(size = size)
+        print("Q learning loaded")
     else:
         agent = None
     return agent
 
 def config():
+    """
+    Load the config.json file
+    """
     try:
         with open('config.json') as f:
             data = json.load(f)
     except:
         assert False, "Error reading config.json."
     return data
+
+def train(agent):
+    """
+    Train the agent
+    """
+    data = config()
+    learning_rate = data["agents"]["Training"]["learning_rate"]
+    total_games = data["agents"]["Training"]["total_games"]
+    print("Training agent")
+    agent.train_model(total_games, learning_rate = learning_rate)
+    return agent
 
 def main():
     try:
@@ -70,10 +90,11 @@ def main():
         print("1) MCTS (Monte Carlo Tree Search)")
         print("2) MiniMax")
         print("3) Heuristic")
+        print("4) Q learning")
         while(True): #Initial menu
             try:
                 agent_choose = input("Select number: ")
-                assert agent_choose in ["1","2","3"], "Must be one of the options"
+                assert agent_choose in ["1","2","3","4"], "Must be one of the options"
                 break
             except:
                 print("You must choose one of the options")
@@ -83,17 +104,20 @@ def main():
         print("1) MCTS (Monte Carlo Tree Search)")
         print("2) MiniMax (with Alpha Beta pruning)")
         print("3) Heuristic")
+        print("4) Q learning")
         while(True): #Initial menu
             try:
                 agent_choose2 = input("Select number: ")
-                assert agent_choose2 in ["1","2","3"], "Must be one of the options"
+                assert agent_choose2 in ["1","2","3","4"], "Must be one of the options"
                 break
             except:
                 print("You must choose one of the options")
 
     ##LOAD AGENT
     agent = agents_choose(agent_choose,size)
+    agent = train(agent)
     agent2 = agents_choose(agent_choose2,size) if int(game_mode) >= 4 else None
+    agent2 = train(agent2) if int(game_mode) >= 4 else None
     #CHOOSE GAME MODE
     game_mode = int(game_mode)
     turnPlayer = player.players()

@@ -21,6 +21,12 @@ class MCTS(agent):
         self.children = dict()  # children of each node
         self.exploration_weight = exploration_weight
 
+    def train_model(self, total_games, learning_rate =0.9):
+        """
+        Don't need to train in the beggining
+        """
+        return None
+
     def choose(self, node):
         "Choose the best successor of node. (Choose a move in the game)"
         if node.is_terminal():

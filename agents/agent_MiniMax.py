@@ -13,6 +13,12 @@ class MiniMax(agent):
         def __init__(self,depth):
             self.depth = depth
 
+        def train_model(self, total_games, learning_rate =0.9):
+            """
+            Don't need to train in the beggining
+            """
+            return None
+
         def _maxmin(self,old_value, new_value,turn):
             """
             If turn is positive: max(old_value,new_value)

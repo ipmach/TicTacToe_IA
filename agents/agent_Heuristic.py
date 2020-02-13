@@ -16,6 +16,12 @@ class Heuristic(agent):
         """
         return None
 
+    def train_model(self, total_games, learning_rate =0.9):
+        """
+        Don't need to train in the beggining
+        """
+        return None
+
     def choose(self,board):
         """
         Choose the board to play
