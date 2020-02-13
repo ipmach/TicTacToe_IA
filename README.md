@@ -43,6 +43,11 @@ The code is done in Python 3.7 and the actual IAs implemented are Monte Carlo Tr
 
 ![Graph](https://github.com/ipmach/TicTacToe_IA/blob/master/Documentation/graph.png)
 
+## Implemented IAs
+  -[MCTS](https://en.wikipedia.org/wiki/Monte_Carlo_tree_search): Monte Carlo Tree Search. <br />
+  -[MM](https://en.wikipedia.org/wiki/Minimax): MiniMax, with "alpha beta optimization" <br />
+  -Heuristic
+
 ## Dependecies
   Dependecies need it to run the code.
   * [Numpy](https://numpy.org/)
@@ -69,10 +74,10 @@ The code is done in Python 3.7 and the actual IAs implemented are Monte Carlo Tr
   pip install tqdm
   ```
 
-## Implemented IAs
-  -[MCTS](https://en.wikipedia.org/wiki/Monte_Carlo_tree_search): Monte Carlo Tree Search. <br />
-  -[MM](https://en.wikipedia.org/wiki/Minimax): MiniMax, with "alpha beta optimization" <br />
-  -Heuristic
+  * [PyLatex](https://jeltef.github.io/PyLaTeX/current/index.html)
+  ```python
+  pip install pylatex
+  ```
 
 ## External code
   The code use from other users of GiHub with some modifications.

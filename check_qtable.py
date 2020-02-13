@@ -2,8 +2,10 @@ import numpy as np
 from matplotlib import pyplot as plt
 import statistics as st
 import pprint as pp
-from matplotlib.backends.backend_pdf import PdfPages
 import datetime
+from pylatex import Document, Section, Subsection, Tabular, Math, TikZ, Axis, \
+    Plot, Figure, Matrix, Alignat, Command, NoEscape, TextBlock,Center
+from pylatex.utils import italic,bold
 
 """
 Script use to create a report of a qtable
@@ -20,35 +22,45 @@ y = np.reshape(x,-1)
 stadistics = {"shape":x.shape,"mean": st.mean(y),"high median": st.median_high(y),"variance": st.variance(y)}
 
 pp.pprint(stadistics)
-with PdfPages('Reports/qtable_report.pdf') as pdf:
-    Tittle = plt.figure(figsize=(6.5,4))
-    Tittle.clf()
-    Tittle.text(0.5,0.5,"Qtable report", transform=Tittle.transFigure, size=25, ha="center")
-    pdf.savefig()
-    plt.close()
-    a1 = plt.figure(figsize=(6.5,4))
-    a1.clf()
-    txt = 'In this document we present the q values in an agent file.'
-    a1.text(0.38,0.8,"Introduction", transform=a1.transFigure, size=20)
-    a1.text(0.14,0.65,"Table path: " + path, transform=a1.transFigure, size=12)
-    date = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-    a1.text(0.14,0.59,"Date: " + date, transform=a1.transFigure, size=12)
-    a1.text(0.5,0.5,txt, transform=a1.transFigure, size=12, ha="center")
-    txt = ' In the graph bellow we can see the qtable.'
-    a1.text(0.4,0.4,txt, transform=a1.transFigure, size=12, ha="center")
-    pdf.savefig()
-    plt.close()
-    a2=plt.figure(2)
-    a2.suptitle('QTable', fontsize=20)
-    plt.imshow(x, aspect='auto')
-    pdf.savefig()
-    plt.close()
-    a2 = plt.figure(figsize=(6.5,4))
-    a2.clf()
-    a2.text(0.3,0.6,"Stadistics", transform=a1.transFigure, size=20)
-    a2.text(0.1,0.5,"Shape: " + str(stadistics["shape"]), transform=a1.transFigure, size=12)
-    a2.text(0.1,0.45,"Mean: " + str(stadistics["mean"]), transform=a1.transFigure, size=12)
-    a2.text(0.1,0.40,"High median: " + str(stadistics["high median"]), transform=a1.transFigure, size=12)
-    a2.text(0.1,0.35,"Variance: " + str(stadistics["variance"]), transform=a1.transFigure, size=12)
-    pdf.savefig()
-    plt.close()
+
+doc = Document('basic')
+doc.preamble.append(Command('title', 'Qtable report'))
+doc.preamble.append(Command('author', 'Tic Tac Toe'))
+doc.preamble.append(Command('date', NoEscape(r'\today')))
+doc.append(NoEscape(r'\maketitle'))
+
+with doc.create(Section('Introducction')):
+        doc.append(bold('This document was autogenerate. '))
+        doc.append('Here we present the saved q values of an agent (path: ')
+        doc.append(italic(path))
+        doc.append('). This document present a image with the respective values of the elements on the qtable.' \
+        + 'and the stadistics values obtain in the process. ')
+        date = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        doc.append(bold('Document generate ' + date  + '.'))
+
+with doc.create(Section('Qtable')):
+    doc.append('In this secction we can see the image of the qtable, each color represent a different value.')
+    with doc.create(Figure(position='htbp')) as plot:
+            a2=plt.figure(2)
+            a2.suptitle('QTable', fontsize=20)
+            plt.imshow(x, aspect='auto')
+            plt.colorbar()
+            plot.add_plot()
+            plot.add_caption('Image of the qtable.')
+
+with doc.create(Section('Stadistics')):
+    doc.append('Here we can see some basice stadistics token from the qtable of the agent.')
+    with doc.create(Center()) as centered:
+        with centered.create(Tabular('|r|l|')) as table:
+            table.add_hline()
+            table.add_row(("Shape", stadistics["shape"]))
+            table.add_hline()
+            table.add_row(("Mean", stadistics["mean"]))
+            table.add_hline()
+            table.add_row(("High median", stadistics["high median"]))
+            table.add_hline()
+            table.add_row(("Variance", stadistics["variance"]))
+            table.add_hline()
+
+
+doc.generate_pdf('Reports/qtable_report', clean_tex=True)

@@ -11,7 +11,9 @@ import random
 from matplotlib import pyplot as plt
 import pandas as pd
 import tqdm
-from matplotlib.backends.backend_pdf import PdfPages
+from pylatex import Document, Section, Subsection, Tabular, Math, TikZ, Axis, \
+    Plot, Figure, Matrix, Alignat, Command, NoEscape, TextBlock,Center
+from pylatex.utils import italic,bold
 import datetime
 
 
@@ -81,9 +83,9 @@ class QLearning(agent):
                     return new_board
                 state[action] = -20
         else: #Greedy action
-            #return board.find_random_child()
             self.greedy.append(self.greedy[-1] +1)
-            return agent_Heuristic.Heuristic().choose(board)
+            return board.find_random_child()
+            #return agent_Heuristic.Heuristic().choose(board)
 
     def do_rollout(self, board):
         """
@@ -91,7 +93,7 @@ class QLearning(agent):
         """
         return None
 
-    def train_model(self, total_games, learning_rate =0.9):
+    def train_model(self, total_games, learning_rate =0.4):
         """
         Trainin the model
         """
@@ -137,40 +139,46 @@ class QLearning(agent):
             a = str(self.size)
             np.save("agents/QLearningSave/qtable_"+a+"x"+a+".npy",self.qtable)
         #Create a report of the training
-        with PdfPages('Reports/qLearning_train_report.pdf') as pdf:
-            Tittle = plt.figure(figsize=(6.5,4))
-            Tittle.clf()
-            Tittle.text(0.5,0.5,"Train report", transform=Tittle.transFigure, size=25, ha="center")
-            pdf.savefig()
-            plt.close()
-            a1 = plt.figure(figsize=(6.5,4))
-            a1.clf()
-            a1.text(0.38,0.8,"Introduction", transform=a1.transFigure, size=20)
-            date = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-            a1.text(0.14,0.59,"Date: " + date, transform=a1.transFigure, size=12)
-            txt = 'In this document we present the training result of the agent.'
-            a1.text(0.5,0.5,txt, transform=a1.transFigure, size=12, ha="center")
-            txt = ' In the graphs bellow we can see history results.'
-            a1.text(0.4,0.4,txt, transform=a1.transFigure, size=12, ha="center")
-            pdf.savefig()
-            plt.close()
-            df = pd.DataFrame({
-                "Games Played": np.arange(total_games+1),
-                "Tie " :tie,
-                "Victory player 1 ":p1,
-                "Victory player 2 ":p2
-            })
-            ax = df.plot.area(x="Games Played",stacked=False)
-            pdf.savefig()
-            plt.close()
-            dg = pd.DataFrame({
-                "times": np.arange(len(self.greedy)),
-                "greedy " :self.greedy,
-            })
-            ax = dg.plot.area(x="times",stacked=False)
-            pdf.savefig()
-            plt.close()
+        doc = Document('basic')
+        doc.preamble.append(Command('title', 'QLearning training report'))
+        doc.preamble.append(Command('author', 'Tic Tac Toe'))
+        doc.preamble.append(Command('date', NoEscape(r'\today')))
+        doc.append(NoEscape(r'\maketitle'))
 
+        with doc.create(Section('Introducction')):
+                doc.append(bold('This document was autogenerate. '))
+                doc.append('Here we present the train ouput of the qlearning agent.')
+                doc.append(' This document present graphs with the victories of the agent and his rival and the total ' \
+                + 'number of greedy moves done in all the training. ')
+                date = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+                doc.append(bold('Document generate ' + date  + '.'))
+
+        with doc.create(Section('Victories count')):
+            doc.append('In this secction we can see the plot with the point counts of each agent.')
+            with doc.create(Figure(position='htbp')) as plot:
+                    df = pd.DataFrame({
+                        "Games Played": np.arange(total_games+1),
+                        "Tie " :tie,
+                        "Victory player 1 ":p1,
+                        "Victory player 2 ":p2
+                    })
+                    ax = df.plot.area(x="Games Played",stacked=False)
+                    plot.add_plot()
+                    plot.add_caption('Points per agent.')
+                    plt.close()
+
+        with doc.create(Section('Greedy count')):
+            doc.append('In this secction we can see the plot with the greedy moves count of the training agent.')
+            with doc.create(Figure(position='htbp')) as plot:
+                    dg = pd.DataFrame({
+                        "times": np.arange(len(self.greedy)),
+                        "greedy " :self.greedy,
+                    })
+                    ax = dg.plot.area(x="times",stacked=False)
+                    plot.add_plot()
+                    plot.add_caption('Count greedy moves.')
+                    plt.close()
+        doc.generate_pdf('Reports/qLearning_train_report', clean_tex=True)
 
 
 """
