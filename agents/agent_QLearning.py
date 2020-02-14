@@ -93,10 +93,18 @@ class QLearning(agent):
         """
         return None
 
-    def train_model(self, total_games, learning_rate =0.4):
+    def train_model(self, total_games, learning_rate =0.4, loadPre = True):
         """
         Trainin the model
         """
+        if loadPre:
+            try:
+                a = str(self.size)
+                self.qtable = np.load("agents/QLearningSave/qtable_"+a+"x"+a+".npy")
+                print("Model loaded from file")
+                return None
+            except:
+                print("No table found")
         turnPlayer = player.players()
         turnPlayer.insertPlayer_1(player.typePlayer.IA_PLAYER, "Training")
         turnPlayer.insertPlayer_2(player.typePlayer.IA_PLAYER_2, "Training")
@@ -179,18 +187,3 @@ class QLearning(agent):
                     plot.add_caption('Count greedy moves.')
                     plt.close()
         doc.generate_pdf('Reports/qLearning_train_report', clean_tex=True)
-
-
-"""
-agent = QLearning(size = 3)
-
-model1 = Model(tup=(None,None,True,None,None,None,None,None,None), turn=True, winner=None,size = 3 ,terminal=False)
-model2 = Model(tup=(None,True,True,None,None,None,None,None,None), turn=True, winner=None,size = 3 ,terminal=False)
-model3 = Model(tup=(True,True,True,None,None,None,None,None,None), turn=True, winner=None,size = 3 ,terminal=False)
-agent._insertQtalble(model2, model3,0.8,True)
-agent._insertQtalble(model1, model2,0.8,False)
-agent.choose(model1)
-#agent.train_model(500)
-print(agent.qtable[agent._ternaryToDecimal(mvc.converv(model2.tup))])
-print(agent.qtable[agent._ternaryToDecimal(mvc.converv(model1.tup))])
-"""

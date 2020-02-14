@@ -18,5 +18,5 @@ class agent(ABC):
         return None
 
     @abstractmethod
-    def train_model(self, total_games, learning_rate =0.9):
+    def train_model(self, total_games, learning_rate =0.9, loadPre = True):
         return None

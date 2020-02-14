@@ -44,8 +44,9 @@ def train(agent):
     data = config()
     learning_rate = data["agents"]["Training"]["learning_rate"]
     total_games = data["agents"]["Training"]["total_games"]
+    loadPre = data["agents"]["Training"]["preload"]
     print("Training agent")
-    agent.train_model(total_games, learning_rate = learning_rate)
+    agent.train_model(total_games, learning_rate = learning_rate, loadPre = loadPre)
     return agent
 
 def main():

@@ -22,7 +22,8 @@
       "Training":
       {
          "learning_rate": 0.4,
-         "total_games": 5000
+         "total_games": 5000,
+         "preload": false
       },
       "train_steps":500
     }

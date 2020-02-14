@@ -21,7 +21,7 @@ class MCTS(agent):
         self.children = dict()  # children of each node
         self.exploration_weight = exploration_weight
 
-    def train_model(self, total_games, learning_rate =0.9):
+    def train_model(self, total_games, learning_rate =0.9, loadPre = True):
         """
         Don't need to train in the beggining
         """
