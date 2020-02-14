@@ -5,7 +5,7 @@ Game of the tic tac toe with different IAs to play with. This code was made just
 The code is done in Python 3.7 and the actual IAs implemented are Monte Carlo Tree Search a heuristic algorithm use in Alpha go, Q-Learning an reinforcement learning algorithm, Minimax, and a simple heuristic algorithm.
 
 
-[![video](https://img.youtube.com/vi/ngVd-QV7YvY/0.jpg)](https://youtu.be/cNNNZ7tfg1o)
+[![video](https://img.youtube.com/vi/cNNNZ7tfg1o/0.jpg)](https://youtu.be/cNNNZ7tfg1o)
 ### (Click in the image to watch the video)
 
 
