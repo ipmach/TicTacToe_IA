@@ -24,6 +24,10 @@ class QLearning(agent):
     """
 
     agent_name = "Q Learning"
+    agent_description = "Q-learning is a model-free reinforcement learning algorithm."+\
+    " The goal of Q-learning is to learn a policy, which tells an agent what action to take under" + \
+    "what circumstances. It does not require a model (hence the connotation model-free) " +\
+    "of the environment, and it can handle problems with stochastic transitions and rewards, without requiring adaptations."
 
     def __init__(self,size = 3, onTraining = False, save= True,limit = None, step = None):
         #Qtable use

@@ -9,6 +9,8 @@ class Heuristic(agent):
     "Heuristic agent, doesn't look the long game he just care about the next two moves"
 
     agent_name = "Heuristic"
+    agent_description = "This agent was design to be a simple player. He only look if he is gonna" + \
+    "win next turn or if he is gonna lose, if none of this two cases is apply then the agent play randomly."
 
     def do_rollout(self,board):
         """

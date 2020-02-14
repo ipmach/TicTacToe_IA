@@ -17,13 +17,13 @@
       },
       "MiniMax":
       {
-        "depth": 4
+        "depth": 6
       },
       "Training":
       {
          "learning_rate": 0.4,
          "total_games": 5000,
-         "preload": false
+         "preload": true
       },
       "train_steps":500
     }

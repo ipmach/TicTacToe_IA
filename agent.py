@@ -6,6 +6,8 @@ class agent(ABC):
     """
     agent_name = "agent"
 
+    agent_description = "no description avaliable."
+
     @abstractmethod
     def choose(board):
         """

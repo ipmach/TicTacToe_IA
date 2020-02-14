@@ -14,6 +14,11 @@ class MCTS(agent):
     "Monte Carlo tree searcher. First rollout the tree then choose a move."
 
     agent_name = "MCTS"
+    agent_description = "Monte Carlo tree search (MCTS) is a heuristic search" + \
+    "algorithm for some kinds of decision processes, most notably those employed in game play. " + \
+    "MCTS was introduced in 2006 for computer Go. It has been used in other board games like chess and shogi,"+ \
+    " games with incomplete information such as bridge and poker, as well as in turn-based-strategy video games" + \
+    " (such as Total War: Rome II's implementation in the high level campaign AI)"
 
     def __init__(self, exploration_weight=1):
         self.Q = defaultdict(int)  # total reward of each node

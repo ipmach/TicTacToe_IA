@@ -8,6 +8,11 @@ import player
 from matplotlib import pyplot as plt
 import pandas as pd
 import copy
+from pylatex import Document, Section, Subsection, Tabular, Math, TikZ, Axis, \
+    Plot, Figure, Matrix, Alignat, Command, NoEscape, TextBlock,Center
+from pylatex.utils import italic,bold
+import datetime
+
 
 def gameStadistic(size,train_steps, turnPlayer,agent, agent2,train = 0 ,save_games = False,visualize = True):
     total_games = 1
@@ -61,14 +66,42 @@ def gameStadistic(size,train_steps, turnPlayer,agent, agent2,train = 0 ,save_gam
         replay.append(game.copy())
     gamesPlayed = np.arange(total_games+1)
 
+    #Create Report
+    doc = Document('basic')
+    doc.preamble.append(Command('title', 'Game report'))
+    doc.preamble.append(Command('author', 'Tic Tac Toe'))
+    doc.preamble.append(Command('date', NoEscape(r'\today')))
+    doc.append(NoEscape(r'\maketitle'))
+
+    with doc.create(Section('Introducction')):
+            doc.append(bold('This document was autogenerate. '))
+            doc.append('Here we present the result between two agents after ' + str(total_games) + 'games.')
+            doc.append(' This document present graphs with the victories of the agents and the total points obtain.')
+            doc.append(' The agent 1 is ' + agent.agent_name + ' and the agent 2 is ' + agent2.agent_name + '. ')
+            date = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+            doc.append(bold('Document generate ' + date  + '.'))
+
+    with doc.create(Section('Agent 1: ' + agent.agent_name)):
+            doc.append(NoEscape(agent.agent_description))
+    with doc.create(Section('Agent 2: ' + agent2.agent_name)):
+            doc.append(NoEscape(agent2.agent_description))
+    with doc.create(Section('Victories count')):
+        doc.append('In this secction we can see the plot with the point counts of each agent.')
+        with doc.create(Figure(position='htbp')) as plot:
+            df = pd.DataFrame({
+                "Games Played": gamesPlayed,
+                "Player 1: "+ turnPlayer.PLAYER1: player1,
+                "Player 2: "+ turnPlayer.PLAYER2: player2
+            })
+            ax = df.plot.area(x="Games Played",stacked=False)
+            plot.add_plot()
+            plot.add_caption('Points per agent.')
+            #plt.close()
     if visualize:
-        df = pd.DataFrame({
-            "Games Played": gamesPlayed,
-            "Player 1: "+ turnPlayer.PLAYER1: player1,
-            "Player 2: "+ turnPlayer.PLAYER2: player2
-        })
-        ax = df.plot.area(x="Games Played",stacked=False)
         plt.show()
+
+    doc.generate_pdf('Reports/game_report', clean_tex=True)
+
 
     if save_games:
         return replay

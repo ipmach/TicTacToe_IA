@@ -9,6 +9,10 @@ class MiniMax(agent):
         "MiniMax tree searcher, with alpha beta pruning optimization."
 
         agent_name = "MiniMax"
+        agent_description = "Minimax (sometimes MinMax, MM[1] or saddle point[2]) is a" + \
+        "decision rule used in artificial intelligence, decision theory, game theory, statistics," + \
+        " and philosophy for minimizing the possible loss for a worst case (maximum loss) scenario. " + \
+        "When dealing with gains, it is referred to as maximin—to maximize the minimum gain. "
 
         def __init__(self,depth):
             self.depth = depth
@@ -79,15 +83,3 @@ class MiniMax(agent):
                 children_board.append(i)
             aux = np.argmax(children_value)
             return children_board[aux]
-
-"""
-agent = MiniMax(4)
-model = Model(tup=(False,False,None,None,None,None,None,None,True), turn=True, winner=None,size = 3 ,terminal=False)
-print(agent.choose(model).tup)
-model = Model(tup=(False,False,None,None,None,None,None,True,True), turn=True, winner=None,size = 3 ,terminal=False)
-print(agent.choose(model).tup)
-model = Model(tup=(False,False,None,True,None,None,None,None,True), turn=True, winner=None,size = 3 ,terminal=False)
-print(agent.choose(model).tup)
-model = Model(tup=(False,True,None,None,False,True,False,True,None), turn=True, winner=None,size = 3 ,terminal=False)
-print(agent.choose(model).tup)
-"""
